@@ -5,6 +5,7 @@
 #include <vector>
 #include <limits.h>
 #include <math.h>
+#include "bitmap_image.hpp"
 
 using namespace std;
 
@@ -16,6 +17,9 @@ struct RGB{
     unsigned int R, G, B;
 };
 
+const int height = 200;
+const int width  = 200;
+
 class mapGenerator
 {
 
@@ -24,11 +28,15 @@ public:
     int height_, width_, nPoints_;
     vector<Point> myPoints_;
     vector<RGB> myColors_;
+    bitmap_image myImage_;
     
-    void createPoints(int nPoints, int height, int width, vector<Point> & myPoints);
-    void createColors(vector<RGB> & myColors);
+    mapGenerator();
+    mapGenerator(int height, int width, int nPoints);
+            
+    void createPoints();
+    void createColors();
     
-    void createSites(vector<Point> & myPoints, vector<RGB> & myColors);
+    void createSites();
     void setSites();
     
     void printPoints();
