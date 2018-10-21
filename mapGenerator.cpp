@@ -2,7 +2,6 @@
 //First width, then height
 mapGenerator::mapGenerator()
 {
-    nPoints_  = 5;
 }
       
 mapGenerator::mapGenerator(int width, int height, int nPoints)
