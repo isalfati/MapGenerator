@@ -25,8 +25,8 @@ void mapGenerator::createPoints()
     
     struct Point myP;
     for(int i = 0; i < nPoints_; i++){
-        rx = rand() % width_  + 5;
-        ry = rand() % height_ + 5;
+        rx = rand() % width_ ;
+        ry = rand() % height_;
         
         myP.x = rx;
         myP.y = ry;
@@ -84,11 +84,7 @@ void mapGenerator::setSites()
     for(const auto& point: myPoints_){
         int x = point.x;
         int y = point.y;
-        for(int i = -1; i < 2; i++){
-            for(int j = -1; j < 2; j++){
-                myImage_.set_pixel(x+i, y+j, 0, 0, 0);
-            }
-        }
+        myImage_.set_pixel(x, y, 0, 0, 0);
     }
     //image_drawer draw(myImage_);
     myImage_.save_image("primertest.bmp");
