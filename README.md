@@ -17,7 +17,8 @@ mkdir build
 cd build
 cmake ..
 make
-sudo make install```
+sudo make install
+```
 
 Once you've done this, you can erase the libnoise folder.
 
