@@ -1,5 +1,6 @@
 #include <iostream>
 #include "bitmap_image.hpp"
+#include "Noise/noise.h"
 
 using namespace std;
 
