@@ -66,4 +66,4 @@ Here are some examples:
 
 #[Map_1] (https://github.com/isalfati/MapGenerator/img/map_1.jpg)
 
-[[https://github.com/isalfati/MapGenerator/blob/master/img/map_1.jpg]]
+![Map1](https://github.com/isalfati/MapGenerator/blob/master/img/map_1.jpg)
