@@ -64,7 +64,6 @@ NOTE: If you are using noiseutils library (http://libnoise.sourceforge.net/downl
 
 Here are some examples:
 
-[Map_1] (https://github.com/isalfati/MapGenerator/img/map_1.jpg)
+#[Map_1] (https://github.com/isalfati/MapGenerator/img/map_1.jpg)
 
-[[https://github.com/isalfati/MapGenerator/img/map_1.jpg|alt=octocat]]
-
+[[https://github.com/isalfati/MapGenerator/blob/master/img/map_1.jpg]]
