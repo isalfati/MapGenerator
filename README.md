@@ -11,13 +11,13 @@ I'm creating a map generator based on Perlin Noise
 First, Follow this steps:
 
 1) 
-```git clone [https://github.com/qknight/libnoise](https://github.com/qknight/libnoise)  
+```git clone https://github.com/qknight/libnoise
 cd libnoise
 mkdir build
 cd build
 cmake ..
 make
-sudo make install``
+sudo make install```
 
 
 2) If you get the following error once you've included the noise library:
