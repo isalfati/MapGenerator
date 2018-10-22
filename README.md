@@ -24,7 +24,7 @@ sudo make install
 
 "error while loading shared libraries: libnoise.so: cannot open shared object file: No such file or directory"
 
-do the folowing:
+do the following:
 
 sudo find / -name libnoise.so
 echo $LD_LIBRARY_PATH
