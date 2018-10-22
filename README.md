@@ -11,7 +11,8 @@ I'm creating a map generator based on Perlin Noise
 First, Follow this steps:
 
 1) 
-```git clone https://github.com/qknight/libnoise
+```
+git clone https://github.com/qknight/libnoise
 cd libnoise
 mkdir build
 cd build
