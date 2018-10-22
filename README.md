@@ -22,7 +22,7 @@ sudo make install
 
 Once you've done this, you can erase the libnoise folder.
 
-Now, its time to include it to out program:
+Now, its time to include it to our program:
 
 ```c++
 #include <noise/noise.h>
