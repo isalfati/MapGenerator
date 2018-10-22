@@ -1,8 +1,9 @@
 #include <iostream>
 #include "bitmap_image.hpp"
-#include "Noise/noise.h"
+#include <noise/noise.h>
 
 using namespace std;
+using namespace noise;
 
 struct RGB
 {
@@ -12,34 +13,32 @@ struct RGB
 
 int main()
 {
-    int width, height;
+    double width, height;
     
     cout << "Please, introduce the size of the image: " << endl;
     cin >> width >> height;
     
-    cout << "Now, introduce the frequency, the octaves and a seed value: " << endl;
+	module::Perlin myModule;
     
-    int freq, oct, seed;
-    cin >> freq >> oct >> seed;
-    
-    //freq = std::clamp(freq, 0.1, 64.0);
-    //oct  = std::clamp(oct, 1, 16);
-    
-    
-    double fx = width  / freq; 
-    double fy = height / freq;
-    
-    bitmap_image image(width, height);
+	bitmap_image image(width, height);
     
     for(int x = 0; x < width; x++){
         for(int y = 0; y < height; y++){
             
-            //const RGB rgb(perlin.octaveNoise0_1(x / fx, y / fy, oct));
-            RGB rgb;
-            rgb.r = 255;
-            rgb.g = 255;
-            rgb.b = 255;
-            
+			float value = myModule.GetValue(x, y, 0);
+			cout << "Value for point: (" << x << ", " << y << "): " << value << endl;
+			
+			RGB rgb;
+			if(value <= 0.5){
+				rgb.r = 178;
+				rgb.g = 178;
+				rgb.b = 178;
+			}else{
+				rgb.r = 255;
+				rgb.g = 0;
+				rgb.b = 0;
+			}
+			
             image.set_pixel(x, y, rgb.r, rgb.b, rgb.g);
         }
     }
