@@ -8,7 +8,7 @@ I'm using 3rd party libraries: [C++ Bitmap Library](https://github.com/ArashPart
 
 I'm creating a map generator based on Perlin Noise.
 
-First, we need to install the [Libnoise Library] (https://github.com/qknight/libnoise) as follows
+First, we need to install the Libnoise Library (https://github.com/qknight/libnoise) as follows
 
 ```
 git clone https://github.com/qknight/libnoise
