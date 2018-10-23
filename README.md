@@ -66,3 +66,9 @@ NOTE: If you are using noiseutils library (http://libnoise.sourceforge.net/downl
 ![Map1](https://github.com/isalfati/MapGenerator/blob/master/img/map_1.bmp)
 ![Map2](https://github.com/isalfati/MapGenerator/blob/master/img/map_2.bmp)
 ![Map3](https://github.com/isalfati/MapGenerator/blob/master/img/map_3.bmp)
+
+Here are some mono-color examples
+
+![Map4](https://github.com/isalfati/MapGenerator/blob/master/img/map_4.bmp)
+![Map5](https://github.com/isalfati/MapGenerator/blob/master/img/map_5.bmp)
+![Map6](https://github.com/isalfati/MapGenerator/blob/master/img/map_6.bmp)
