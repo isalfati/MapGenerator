@@ -34,13 +34,14 @@ Makefile as an example to show how to include the library while compiling.
 
 ```
 CFLAGS = -o
+STD = -std=c++11
 CC = g++
 
 MG: main.o 
 	$(CC) main.o $(CFLAGS) MG.out -I ./Noise/ -L -/Noise -lnoise
 
 main.o:
-	$(CC) -c main.cpp
+	$(CC) $(STD) -c main.cpp
 
 clean:
 	rm -f core *.o
