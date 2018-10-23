@@ -38,13 +38,13 @@ STD = -std=c++11
 CC = g++
 
 MG: main.o 
-	$(CC) main.o $(CFLAGS) MG.out -I ./Noise/ -L -/Noise -lnoise
+	$(CC) main.o $(CFLAGS) MG.out -I/usr/local/include -L/usr/local/lib -lnoise
 
 main.o:
 	$(CC) $(STD) -c main.cpp
 
 clean:
-	rm -f core *.o
+	rm -f core *.o *.out
 ```
 
 Once you've compiled, try to execute the binary. It is possible that you get the following error:
@@ -65,3 +65,5 @@ export LD_LIBRARY_PATH
 ```
 
 Then you should be able to run your application.
+
+NOTE: Do not forget to include the noiseutils.cpp
