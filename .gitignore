@@ -1,0 +1,4 @@
+*.o
+*.out
+*.codelite
+*.workspace
