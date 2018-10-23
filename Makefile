@@ -3,7 +3,7 @@ STD = -std=c++11
 CC = g++
 
 MG: main.o noiseutils.o
-	$(CC) main.o $(CFLAGS) MG.out -I ./Noise/ -L -/Noise -lnoise
+	$(CC) main.o noiseutils.o $(CFLAGS) MG.out -I ./Noise/ -L -/Noise -lnoise
 
 main.o:
 	$(CC) $(STD) -c main.cpp
