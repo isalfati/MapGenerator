@@ -62,3 +62,7 @@ Then you should be able to run your application.
 
 NOTE: If you are using noiseutils library (http://libnoise.sourceforge.net/downloads/noiseutils.zip), do not forget to include noiseutils.cpp into the main file.
 
+Here are some examples:
+
+![Map_1](isalfati.github.com/MapGenerator/img/map_1.bmp)
+
