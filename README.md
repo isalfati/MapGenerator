@@ -60,4 +60,5 @@ export LD_LIBRARY_PATH
 
 Then you should be able to run your application.
 
-NOTE: Do not forget to include the noiseutils.cpp into the main file.
+NOTE: If you are using [noiseutils] (http://libnoise.sourceforge.net/downloads/noiseutils.zip), do not forget to include noiseutils.cpp into the main file.
+
