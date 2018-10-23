@@ -3,6 +3,7 @@
 #include "noiseutils.cpp"
 #include <ctime>
 #include <random>
+#include <sstream>
 
 using namespace std;
 using namespace noise;
@@ -12,6 +13,14 @@ struct RGB
 {
     int r, g, b;
 };
+
+string tswp(double value, int n = 3)
+{
+	ostringstream out;
+	out.precision(n);
+	out << fixed << value;
+	return out.str();
+}
 
 double dRand(double lower, double upper){
 	std::random_device rd;
@@ -70,8 +79,15 @@ int main()
 	utils::WriterBMP writer;
 	writer.SetSourceImage(image);
 	
+	
 	auto str = std::to_string(seed);
-	writer.SetDestFilename(str + ".bmp");
+	auto parameters = tswp(xLow) + "_" + tswp(xHigh) + "_" + 
+					  tswp(yLow) + "_" + tswp(yHigh) + "_" + 
+					  std::to_string(width) + "x" + std::to_string(height);
+	auto filename = str + "_" + parameters;
+	
+	//writer.SetDestFilename(str + ".png");
+	writer.SetDestFilename("./img/" + filename + ".bmp");
 	writer.WriteDestFile();
 
     cout << "Check the directory. It contains the generated noise image." << endl; 
