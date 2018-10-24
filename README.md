@@ -68,6 +68,7 @@ NOTE: If you are using noiseutils library (http://libnoise.sourceforge.net/downl
 
 In this example, the black (in land) and yellow (in sea) points means that there is a Point of Interest. 
 The number of POIs is randomly generated.
+
 ![Map3](https://github.com/isalfati/MapGenerator/blob/master/img/map_3.bmp)
 
 Here are some mono-color examples
