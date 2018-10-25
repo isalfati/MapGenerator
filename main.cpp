@@ -9,6 +9,7 @@ using namespace std;
 using namespace noise;
 using namespace noise::utils;
 
+
 // To String With Precision
 string tswp(double value, int n = 3)
 {
@@ -30,21 +31,54 @@ int main()
 	
 	cout << "This is the Seed for this map: " << seed << endl;
 	
-	cout << "Please, introduce the size of the image (width, height), and xLow, xHigh, yLow, yHigh." << endl;
+	// Octaves     = Function with a certain frequency, each consecutive octave doubles the last frequency.
+	// Frequency   = How many changes ocurr along a unit lenght. Increasing the frequency will increase the number of terrain features and also decreses the size of those features
+	// Persistence = The persistence determines how quickly the amplitudes fall for each successive octave. More persistance will create rougher terrains.
+	// 
+	cout << "Please, introduce the size of the image (width, height), the bounds of a square (xLow, xHigh, yLow, yHigh), " << endl;
+	cout << "the number of octaves (1-6, the bigger, the better results), the frequency (1-300), and the persistance (0-1, the bigger, the rougher terrains)" << endl;
 
 	int width, height;
     cin >> width >> height;
 	double xLow, xHigh, yLow, yHigh;
 	cin >> xLow >> xHigh >> yLow >> yHigh;
 
+/*
+	// Rough Mountainous terrains 
+	module::RidgedMulti mountainsTerrain;
+	mountainsTerrain.SetSeed(seed/2);
+		
+	
+	// Flat terrain 
+	module::Billow baseFlatTerrain;
+	baseFlatTerrain.SetSeed(seed);
+	baseFlatTerrain.SetFrequency(1.0);
+
+	// Scale Bias 
+	module::ScaleBias flatTerrain;
+	flatTerrain.SetSourceModule(0, baseFlatTerrain);
+	flatTerrain.SetScale(0.225);
+	flatTerrain.SetBias(0.50); // subir para tener más tierra.
+*/
 	module::Perlin myPerlin;
-	
-	//A new Map each time:
 	myPerlin.SetSeed(seed);
-	
+	//
+	//myPerlin.SetPersistence(0.25);
+	//
+/*
+	// Selector Module
+	module::Select finalTerrain;
+	finalTerrain.SetSourceModule(0, flatTerrain);
+	finalTerrain.SetSourceModule(1, mountainsTerrain);
+	finalTerrain.SetControlModule(myPerlin);
+	finalTerrain.SetBounds(0.0, 1000.0);
+	finalTerrain.SetEdgeFalloff(0.5);
+*/
+
 	utils::NoiseMap heightMap;
 	utils::NoiseMapBuilderPlane heightMapBuilder;
-	heightMapBuilder.SetSourceModule (myPerlin);
+	//heightMapBuilder.SetSourceModule(finalTerrain);
+	heightMapBuilder.SetSourceModule(myPerlin);
 	heightMapBuilder.SetDestNoiseMap (heightMap);
 	heightMapBuilder.SetDestSize(width, height);
 	heightMapBuilder.SetBounds(xLow, xHigh, yLow, yHigh);
@@ -86,7 +120,6 @@ int main()
 	utils::Color  sea(255, 235,  0, 255);
 	utils::Color land(  0,   0,  0, 255);
 	utils::Color type;
-	
 	
 	//cout << "POI IN: " << xx << ", " << yy << endl;
 	for(int k = 0; k < POI.size(); k++){
