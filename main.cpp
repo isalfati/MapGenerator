@@ -99,6 +99,12 @@ int main()
 	renderer.AddGradientPoint ( 0.3750, utils::Color (224, 224,   0, 255)); // dirt
 	renderer.AddGradientPoint ( 0.7500, utils::Color (128, 128, 128, 255)); // rock
 	renderer.AddGradientPoint ( 1.0000, utils::Color (255, 255, 255, 255)); // snow
+	
+	/*renderer.AddGradientPoint (-1.0000, utils::Color (   0,  0,  128, 255));
+	renderer.AddGradientPoint (-0.7500, utils::Color ( 240, 240,  64, 255));
+	renderer.AddGradientPoint (-0.5000, utils::Color (  32, 160,   0, 128));
+	renderer.AddGradientPoint ( 0.2000, utils::Color (  32, 160,   0, 255));
+	renderer.AddGradientPoint ( 1.0000, utils::Color ( 128, 128, 128, 255));*/
 
 	renderer.EnableLight();
 	renderer.SetLightContrast(1.0);
