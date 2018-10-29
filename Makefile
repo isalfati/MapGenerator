@@ -1,6 +1,13 @@
 CFLAGS = -o
 STD = -std=c++11
 CC = g++
+LIBS = -I/usr/local/include -L/usr/local/lib -lnoise
+
+BM: bloodmoon.o
+	$(CC) bloodmoon.o $(CFLAGS) bloodmoon.out $(LIBS)
+
+bloodmoon.o:
+	$(CC) $(STD) -c bloodmoon.cpp
 
 MG: main.o
 	$(CC) main.o $(CFLAGS) MG.out -I/usr/local/include -L/usr/local/lib -lnoise
@@ -16,7 +23,6 @@ main.o:
 
 rebuild:
 	$(MAKE) clean
-	$(MAKE) MG
 
 clean:
 	rm -f core *.o *.out

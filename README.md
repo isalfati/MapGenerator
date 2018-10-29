@@ -76,3 +76,8 @@ Here are some mono-color examples
 ![Map4](https://github.com/isalfati/MapGenerator/blob/master/img/map_4.bmp)
 ![Map5](https://github.com/isalfati/MapGenerator/blob/master/img/map_5.bmp)
 ![Map6](https://github.com/isalfati/MapGenerator/blob/master/img/map_6.bmp)
+
+Also, an aplication of this library could be a blood moon generator:
+
+![BM1](https://github.com/isalfati/MapGenerator/blob/master/img/BM_1.bmp) ![BM2](https://github.com/isalfati/MapGenerator/blob/master/img/BM_2.bmp)
+![BM3](https://github.com/isalfati/MapGenerator/blob/master/img/BM_3.bmp) ![BM4](https://github.com/isalfati/MapGenerator/blob/master/img/BM_4.bmp)
