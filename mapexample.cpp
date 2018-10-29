@@ -58,7 +58,7 @@ int main()
 	double dx, dy, d, maxw, delta, gradient;
 	for(int x = 0; x < width; x++){
 		for(int y = 0; y < height; y++){
-			dx = abs(x - width*0.5);
+			/*dx = abs(x - width*0.5);
 			dy = abs(y - width*0.5);
 			d = sqrt(dx*dx + dy*dy);
 			
@@ -66,11 +66,11 @@ int main()
 			delta = d / maxw;
 			gradient = delta * delta;
 			
-			double value = max (0.0, 1.0 - gradient);
+			double value = max (0.0, 1.0 - gradient);*/
 			double vmap = heightMap.GetValue(x, y);
 			
 			//cout << "Actual Value: " << vmap << ". Replaced with: ";
-			myMask.SetValue(x, y, vmap*value);
+			myMask.SetValue(x, y, vmap);
 			//cout << vmap*value << endl;
 		}
 	}
@@ -82,18 +82,14 @@ int main()
 	renderer.SetDestImage (image);
 	renderer.ClearGradient ();
 	
-	renderer.AddGradientPoint (-1.0000, utils::Color(255, 0, 0, 255));
-	renderer.AddGradientPoint ( 0.0000, utils::Color(  0,   0,   0, 255));
-	renderer.AddGradientPoint ( 1.0000, utils::Color(255, 0, 0, 255));
-	
-	/*renderer.AddGradientPoint (-1.0000, utils::Color (  0,   0, 128, 255)); // deeps
+	renderer.AddGradientPoint (-1.0000, utils::Color (  0,   0, 128, 255)); // deeps
 	renderer.AddGradientPoint (-0.2500, utils::Color (  0,   0, 255, 255)); // shallow
 	renderer.AddGradientPoint (-0.0625, utils::Color (  0, 128, 255, 255)); // shore
 	renderer.AddGradientPoint ( 0.0000, utils::Color (240, 240,  64, 255)); // sand
 	renderer.AddGradientPoint ( 0.1250, utils::Color ( 32, 160,   0, 255)); // grass
-	renderer.AddGradientPoint ( 0.3750, utils::Color (224, 224,   0, 255)); // dirt
-	renderer.AddGradientPoint ( 0.7500, utils::Color (128, 128, 128, 255)); // rock
-	renderer.AddGradientPoint ( 1.0000, utils::Color (255, 255, 255, 255)); // snow*/
+	renderer.AddGradientPoint ( 0.6750, utils::Color (224, 224,   0, 255)); // dirt
+	renderer.AddGradientPoint ( 0.9900, utils::Color (128, 128, 128, 255)); // rock
+	renderer.AddGradientPoint ( 1.0000, utils::Color (255, 255, 255, 255)); // snow
 	
 	renderer.EnableLight ();
 	renderer.SetLightContrast (contrast); //3.0
