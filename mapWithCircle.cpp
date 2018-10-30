@@ -55,10 +55,6 @@ int main()
 	utils::NoiseMap mapNorm;
 	mapNorm.SetSize(width, height);
 	
-	
-	
-	
-	
 	// Blood Moon Generator
 	double dx, dy, d, maxw, delta, gradient;
 	for(int x = 0; x < width; x++){
@@ -75,13 +71,7 @@ int main()
 			double vmap = heightMap.GetValue(x, y);
 			
 			//cout << "New Values: " << vmap*value << endl;
-			heightMap.SetValue(x, y, /*vmap - */value);
-			
-			if(x % width + 1  == 0){ cout << endl;
-				if(y % height + 1 == 0) cout << endl;
-			}
-			cout << value << " ";
-			
+			heightMap.SetValue(x, y, vmap*value);
 		}
 	}
 
@@ -91,18 +81,16 @@ int main()
 	renderer.SetDestImage (image);
 	renderer.ClearGradient ();
 	
-	renderer.AddGradientPoint (-1.0000, utils::Color (  0,   0,   0, 255));
-	renderer.AddGradientPoint ( 0.0000, utils::Color (255, 255, 255, 255));
-	renderer.AddGradientPoint ( 1.0000, utils::Color (  0,   0,   0, 255));
-	
-	/*renderer.AddGradientPoint (-1.0000, utils::Color (  0,   0, 128, 255)); // deeps
+	renderer.AddGradientPoint (-1.0000, utils::Color (  0,   0, 128, 255)); // deeps
 	renderer.AddGradientPoint (-0.2500, utils::Color (  0,   0, 255, 255)); // shallow
 	renderer.AddGradientPoint (-0.0625, utils::Color (  0, 128, 255, 255)); // shore
-	renderer.AddGradientPoint ( 0.0000, utils::Color (240, 240,  64, 255)); // sand
+	//renderer.AddGradientPoint ( 0.0000, utils::Color (240, 240,  64, 255)); // sand
+	renderer.AddGradientPoint ( 0.0000, utils::Color (255, 255, 255, 255));
+	renderer.AddGradientPoint ( 0.0001, utils::Color (240, 240,  64, 255)); //sand
 	renderer.AddGradientPoint ( 0.1250, utils::Color ( 32, 160,   0, 255)); // grass
 	renderer.AddGradientPoint ( 0.3750, utils::Color (224, 224,   0, 255)); // dirt
 	renderer.AddGradientPoint ( 0.7500, utils::Color (128, 128, 128, 255)); // rock
-	renderer.AddGradientPoint ( 1.0000, utils::Color (255, 255, 255, 255)); // snow*/
+	renderer.AddGradientPoint ( 1.0000, utils::Color (255, 255, 255, 255)); // snow
 	
 	renderer.EnableLight ();
 	renderer.SetLightContrast (contrast); //3.0
