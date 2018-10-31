@@ -1,6 +1,7 @@
 #include <iostream>
 #include <noise/noise.h>
 #include "noiseutils.cpp"
+#include <algorithm>
 #include <ctime>
 #include <random>
 #include <sstream>
@@ -9,8 +10,15 @@ using namespace std;
 using namespace noise;
 using namespace noise::utils;
 
-#define SEA_LEVEL -0.0
+struct Point{
+	int x, y;
+	double value;
+};
 
+bool operator<(const Point& a, const Point& b)
+{
+	return a.value < b.value;
+}
 
 string tswp(double value, int n = 3)
 {
@@ -43,15 +51,8 @@ int main()
 	basicMap.SetPersistence(0.5);
 	basicMap.SetSeed(seed);
 	
-	module::RidgedMulti ridgedMap;
-	ridgedMap.SetFrequency(1.0);
-	ridgedMap.SetLacunarity(2);
-	ridgedMap.SetNoiseQuality(QUALITY_BEST);
-	ridgedMap.SetOctaveCount(1);
-	ridgedMap.SetSeed(seed/2);
-	
-	utils::NoiseMap heightMap, riverMap;
-	utils::NoiseMapBuilderPlane heightMapBuilder, riverMapBuilder;
+	utils::NoiseMap heightMap;
+	utils::NoiseMapBuilderPlane heightMapBuilder;
 	//heightMapBuilder.SetSourceModule(/* NAME FINAL TERRAIN */);
 	heightMapBuilder.SetSourceModule(basicMap);
 	heightMapBuilder.SetDestNoiseMap(heightMap);
@@ -59,15 +60,7 @@ int main()
 	heightMapBuilder.SetBounds(xLow, xHigh, yLow, yHigh);
 	heightMapBuilder.Build();
 
-	riverMapBuilder.SetSourceModule(ridgedMap);
-	riverMapBuilder.SetDestNoiseMap(riverMap);
-	riverMapBuilder.SetDestSize(width, height);
-	riverMapBuilder.SetBounds(xLow, xHigh, yLow, yHigh);
-	riverMapBuilder.Build();
-
-	utils::NoiseMap mapNorm;
-	mapNorm.SetSize(width, height);
-	
+	// Normalise
 	double nh, maxnh, minnh;
 	maxnh = -10.0;
 	minnh =  10.0;
@@ -88,6 +81,7 @@ int main()
 		}
 	}
 	
+	// Circle filter
 	double dx, dy, d, maxw, delta, gradient;
 	for(int x = 0; x < width; x++){
 		for(int y = 0; y < height; y++){
@@ -107,22 +101,65 @@ int main()
 		}
 		//cout << endl;
 	}
-
-	for( int x = 0; x < width; x++){
+	
+	int xmax, ymax;
+	double minor = 0.0;
+	for(int x = 0; x < width; x++){
 		for(int y = 0; y < height; y++){
-			double v = riverMap.GetValue(x, y);
-			if( v > 0.2000){
-				//cout << v << " " << endl;
-				
-				heightMap.SetValue(x, y, -0.99);
+			double v = heightMap.GetValue(x, y);
+			if( v > minor){
+				minor = v;
+				xmax = x; ymax = y;
 			}
 		}
 	}
-
+	bool shallow = false;
+	Point local;
+	local.x = xmax;
+	local.y = ymax;
+	local.value = heightMap.GetValue(local.x, local.y);
+	int j = 0;
+	vector<Point> neighbors (8);
+	while(!shallow /*or (j < 1000)*/){
+		int i = 0;
+		for(int x = -1; x <= 1; x++){
+			for(int y = -1; y <= 1; y++){
+				if((x==0) and (y==0)) {
+					// skip.
+				}else{
+					neighbors[i].x = local.x + x;
+					neighbors[i].y = local.y + y;
+					neighbors[i].value = heightMap.GetValue(neighbors[i].x, neighbors[i].y);
+					i++;
+				}
+			}
+		}
+		// Select next point.
+		cout << "Center: " << local.x << ", " << local.y << " with value: " << local.value << endl;
+		cout << "Before sort" << endl;
+		for(int j = 0; j < neighbors.size(); j++){
+			cout << "P(" << neighbors[j].x << ", " << neighbors[j].y << ") has value: " << neighbors[j].value << endl;
+		}
+		std::sort(neighbors.begin(), neighbors.end());
+		local = neighbors[0];
+		cout << "New center: " << local.x << ", " << local.y << " with value: " << local.value << endl;
+		cout << "After sort" << endl;
+		for(int j = 0; j < neighbors.size(); j++){
+			cout << "P(" << neighbors[j].x << ", " << neighbors[j].y << ") has value: " << neighbors[j].value << endl;
+		}
+		cout << "//" << endl;
+		heightMap.SetValue(local.x, local.y, 1.0000);
+		if(local.value < 0.2000) shallow = true;
+		//j++;
+	}
+	
+	
+	
+	cout << "Position of the maximum value of the heightMap: [X,Y]: " << xmax <<  ", " << ymax << endl;
+	
 	utils::RendererImage renderer;
 	utils::Image image;
 	renderer.SetSourceNoiseMap (heightMap);
-	//renderer.SetSourceNoiseMap (riverMap);
 	renderer.SetDestImage (image);
 	renderer.ClearGradient ();
 	
@@ -131,16 +168,16 @@ int main()
 	renderer.AddGradientPoint ( 1.0000, utils::Color (  0,   0,   0, 255));*/
 	
 	renderer.AddGradientPoint (-1.0000, utils::Color (  0,   0,  64, 255));
-	renderer.AddGradientPoint ( 0.0000, utils::Color (  0,   0, 128, 255)); //deeps
-	renderer.AddGradientPoint ( 0.2000, utils::Color (  0,   0, 255, 255)); //shallow
-	renderer.AddGradientPoint ( 0.3000, utils::Color (  0, 128, 255, 255)); //shore
-	renderer.AddGradientPoint ( 0.3500, utils::Color (240, 240, 128, 255)); //sand
-	//renderer.AddGradientPoint ( 0.5500, utils::Color (224, 224,   0, 255)); //dirt
-	renderer.AddGradientPoint ( 0.5500, utils::Color (223, 191, 159, 255)); //dirt
-	renderer.AddGradientPoint ( 0.4500, utils::Color ( 32, 200,   0, 255)); //grass 
-	renderer.AddGradientPoint ( 0.7500, utils::Color (128, 128, 128, 255)); //rock
+	renderer.AddGradientPoint ( 0.0000, utils::Color (  0,   0, 128, 255)); // deeps
+	renderer.AddGradientPoint ( 0.1000, utils::Color (  0,   0, 255, 255)); // shallow
+	renderer.AddGradientPoint ( 0.2000, utils::Color (  0, 128, 255, 255)); // shore
+	renderer.AddGradientPoint ( 0.3500, utils::Color (240, 240, 128, 255)); // sand
+	//renderer.AddGradientPoint ( 0.5500, utils::Color (224, 224,   0, 255)); // dirt
+	renderer.AddGradientPoint ( 0.4500, utils::Color ( 32, 200,   0, 255)); // grass 
+	renderer.AddGradientPoint ( 0.5500, utils::Color (223, 191, 159, 255)); // dirt
+	renderer.AddGradientPoint ( 0.7500, utils::Color (128, 128, 128, 255)); // rock
 	renderer.AddGradientPoint ( 0.9000, utils::Color (207,  16,  32, 255)); // Lava
-	renderer.AddGradientPoint ( 1.0000, utils::Color (255,   0,   0, 255)); //Pure RED*/
+	renderer.AddGradientPoint ( 1.0000, utils::Color (255,   0,   0, 255)); // Pure RED*/
 	
 	renderer.EnableLight ();
 	renderer.SetLightContrast (contrast); //3.0
