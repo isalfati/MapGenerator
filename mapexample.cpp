@@ -35,7 +35,6 @@ int main()
 	cin >> contrast >> brightness;
 	
 	module::Perlin basicMap;
-	//module::RidgedMulti basicMap;
 	basicMap.SetFrequency(1.0); //Altough I think it is already defaulted at 1.
 	//basicMap.SetFrequency(1.5);
 	basicMap.SetLacunarity(2);
@@ -44,8 +43,15 @@ int main()
 	basicMap.SetPersistence(0.5);
 	basicMap.SetSeed(seed);
 	
-	utils::NoiseMap heightMap;
-	utils::NoiseMapBuilderPlane heightMapBuilder;
+	module::RidgedMulti ridgedMap;
+	ridgedMap.SetFrequency(1.0);
+	ridgedMap.SetLacunarity(2);
+	ridgedMap.SetNoiseQuality(QUALITY_BEST);
+	ridgedMap.SetOctaveCount(1);
+	ridgedMap.SetSeed(seed/2);
+	
+	utils::NoiseMap heightMap, riverMap;
+	utils::NoiseMapBuilderPlane heightMapBuilder, riverMapBuilder;
 	//heightMapBuilder.SetSourceModule(/* NAME FINAL TERRAIN */);
 	heightMapBuilder.SetSourceModule(basicMap);
 	heightMapBuilder.SetDestNoiseMap(heightMap);
@@ -53,10 +59,16 @@ int main()
 	heightMapBuilder.SetBounds(xLow, xHigh, yLow, yHigh);
 	heightMapBuilder.Build();
 
+	riverMapBuilder.SetSourceModule(ridgedMap);
+	riverMapBuilder.SetDestNoiseMap(riverMap);
+	riverMapBuilder.SetDestSize(width, height);
+	riverMapBuilder.SetBounds(xLow, xHigh, yLow, yHigh);
+	riverMapBuilder.Build();
+
 	utils::NoiseMap mapNorm;
 	mapNorm.SetSize(width, height);
 	
-		double nh, maxnh, minnh;
+	double nh, maxnh, minnh;
 	maxnh = -10.0;
 	minnh =  10.0;
 	for(int i = 0; i < width; i++){
@@ -96,16 +108,29 @@ int main()
 		//cout << endl;
 	}
 
+	for( int x = 0; x < width; x++){
+		for(int y = 0; y < height; y++){
+			double v = riverMap.GetValue(x, y);
+			if( v > 0.2000){
+				//cout << v << " " << endl;
+				
+				heightMap.SetValue(x, y, -0.99);
+			}
+		}
+	}
+
 	utils::RendererImage renderer;
 	utils::Image image;
 	renderer.SetSourceNoiseMap (heightMap);
+	//renderer.SetSourceNoiseMap (riverMap);
 	renderer.SetDestImage (image);
 	renderer.ClearGradient ();
 	
 	/*renderer.AddGradientPoint (-1.0000, utils::Color (255,   0,   0, 255));
 	renderer.AddGradientPoint ( 0.0000, utils::Color (255, 255, 255, 255));
-	renderer.AddGradientPoint ( 1.0000, utils::Color (  0, 255,   0, 255));*/
+	renderer.AddGradientPoint ( 1.0000, utils::Color (  0,   0,   0, 255));*/
 	
+	renderer.AddGradientPoint (-1.0000, utils::Color (  0,   0,  64, 255));
 	renderer.AddGradientPoint ( 0.0000, utils::Color (  0,   0, 128, 255)); //deeps
 	renderer.AddGradientPoint ( 0.2000, utils::Color (  0,   0, 255, 255)); //shallow
 	renderer.AddGradientPoint ( 0.3000, utils::Color (  0, 128, 255, 255)); //shore
@@ -115,7 +140,7 @@ int main()
 	renderer.AddGradientPoint ( 0.4500, utils::Color ( 32, 200,   0, 255)); //grass 
 	renderer.AddGradientPoint ( 0.7500, utils::Color (128, 128, 128, 255)); //rock
 	renderer.AddGradientPoint ( 0.9000, utils::Color (207,  16,  32, 255)); // Lava
-	renderer.AddGradientPoint ( 1.0000, utils::Color (255,   0,   0, 255)); //Pure RED
+	renderer.AddGradientPoint ( 1.0000, utils::Color (255,   0,   0, 255)); //Pure RED*/
 	
 	renderer.EnableLight ();
 	renderer.SetLightContrast (contrast); //3.0
