@@ -44,17 +44,39 @@ int main()
 	
 	module::Perlin basicMap;
 	basicMap.SetFrequency(1.0); //Altough I think it is already defaulted at 1.
-	//basicMap.SetFrequency(1.5);
-	basicMap.SetLacunarity(2);
+	basicMap.SetLacunarity(2.2);
 	basicMap.SetNoiseQuality(QUALITY_BEST);
 	basicMap.SetOctaveCount(16);
 	basicMap.SetPersistence(0.5);
-	basicMap.SetSeed(seed);
+	//basicMap.SetSeed(2002235257);
+	basicMap.SetSeed(283802548);
+	
+	module::Curve basicMapCurved;
+	basicMapCurved.SetSourceModule(0, basicMap);
+	/*basicMapCurved.AddControlPoint(-2.0000, -1.625);
+	basicMapCurved.AddControlPoint(-1.0000, -1.375);
+	basicMapCurved.AddControlPoint( 0.0000, -0.375);
+	basicMapCurved.AddControlPoint( 0.0625,  0.125);
+	basicMapCurved.AddControlPoint( 0.1250,  0.250);
+	basicMapCurved.AddControlPoint( 0.2500,  1.000);
+	basicMapCurved.AddControlPoint( 0.5000,  0.250);
+	basicMapCurved.AddControlPoint( 0.7500,  0.250);
+	basicMapCurved.AddControlPoint( 1.0000,  0.500);
+	basicMapCurved.AddControlPoint( 2.0000,  0.500);//*/
+	
+	//Seguir desde linea 153
+	basicMapCurved.AddControlPoint(-1.0000,  1.0000);
+	basicMapCurved.AddControlPoint(-0.5000,  0.5000);
+	basicMapCurved.AddControlPoint( 0.0000,  0.0000);
+	basicMapCurved.AddControlPoint( 0.5000, -0.5000);
+	basicMapCurved.AddControlPoint( 1.0000, -1.0000);
+	
 	
 	utils::NoiseMap heightMap;
 	utils::NoiseMapBuilderPlane heightMapBuilder;
 	//heightMapBuilder.SetSourceModule(/* NAME FINAL TERRAIN */);
-	heightMapBuilder.SetSourceModule(basicMap);
+	//heightMapBuilder.SetSourceModule(basicMap);
+	heightMapBuilder.SetSourceModule(basicMapCurved);
 	heightMapBuilder.SetDestNoiseMap(heightMap);
 	heightMapBuilder.SetDestSize(width, height);
 	heightMapBuilder.SetBounds(xLow, xHigh, yLow, yHigh);
@@ -100,8 +122,61 @@ int main()
 			heightMap.SetValue(x, y, vmap * value);
 		}
 		//cout << endl;
-	}
+	}//*/
 	
+	utils::RendererImage renderer;
+	utils::Image image;
+	renderer.SetSourceNoiseMap (heightMap);
+	renderer.SetDestImage (image);
+	renderer.ClearGradient ();
+	
+
+	/*renderer.AddGradientPoint (-1.0000, utils::Color (255,   0,   0, 255));
+	renderer.AddGradientPoint ( 0.0000, utils::Color (255, 255, 255, 255));
+	renderer.AddGradientPoint ( 1.0000, utils::Color (  0,   0,   0, 255));//*/
+	
+	//Render standard
+	/*renderer.AddGradientPoint (-1.0000, utils::Color (  0,   0, 128, 255)); // deeps
+	renderer.AddGradientPoint (-0.2500, utils::Color (  0,   0, 255, 255)); // shallow
+	renderer.AddGradientPoint (-0.0625, utils::Color (  0, 128, 255, 255)); // shore
+	renderer.AddGradientPoint ( 0.0000, utils::Color (240, 240,  64, 255)); // sand
+	renderer.AddGradientPoint ( 0.1250, utils::Color ( 32, 160,   0, 255)); // grass
+	renderer.AddGradientPoint ( 0.3750, utils::Color (224, 224,   0, 255)); // dirt
+	renderer.AddGradientPoint ( 0.7500, utils::Color (128, 128, 128, 255)); // rock
+	renderer.AddGradientPoint ( 1.0000, utils::Color (255, 255, 255, 255)); // snow */
+	
+	
+	//Render para mapas normalizados
+	renderer.AddGradientPoint (-1.0000, utils::Color (  0,   0,  64, 255));
+	renderer.AddGradientPoint ( 0.0000, utils::Color (  0,   0, 128, 255)); // deeps
+	renderer.AddGradientPoint ( 0.1000, utils::Color (  0,   0, 255, 255)); // shallow
+	renderer.AddGradientPoint ( 0.2000, utils::Color (  0, 128, 255, 255)); // shore
+	renderer.AddGradientPoint ( 0.3500, utils::Color (240, 240, 128, 255)); // sand
+	//renderer.AddGradientPoint ( 0.5500, utils::Color (224, 224,   0, 255)); // dirt
+	renderer.AddGradientPoint ( 0.4500, utils::Color ( 32, 200,   0, 255)); // grass 
+	renderer.AddGradientPoint ( 0.5500, utils::Color (223, 191, 159, 255)); // dirt
+	renderer.AddGradientPoint ( 0.7500, utils::Color (128, 128, 128, 255)); // rock
+	//renderer.AddGradientPoint ( 0.9000, utils::Color (207,  16,  32, 255)); // Lava
+	//renderer.AddGradientPoint ( 1.0000, utils::Color (255,   0,   0, 255)); // Pure RED
+	renderer.AddGradientPoint ( 0.9000, utils::Color (128, 128, 128, 255));
+	renderer.AddGradientPoint ( 1.0000, utils::Color (255, 255, 255, 255)); // */
+	
+	renderer.EnableLight ();
+	renderer.SetLightContrast (contrast); //3.0
+	renderer.SetLightBrightness (brightness); //2.0
+	renderer.Render ();
+	
+	utils::WriterBMP Writer;
+	Writer.SetSourceImage(image);
+	
+	Writer.SetDestFilename(std::to_string(seed) + ".bmp");
+	Writer.WriteDestFile();
+	
+	cout << "Check the directory. It contains the generated map." << endl;
+}
+
+	/*	
+	// This part searches and creates a path for rivers.
 	int xmax, ymax;
 	double minor = 0.0;
 	for(int x = 0; x < width; x++){
@@ -120,7 +195,7 @@ int main()
 	local.value = heightMap.GetValue(local.x, local.y);
 	int j = 0;
 	vector<Point> neighbors (8);
-	while(!shallow /*or (j < 1000)*/){
+	while(!shallow){
 		int i = 0;
 		for(int x = -1; x <= 1; x++){
 			for(int y = -1; y <= 1; y++){
@@ -149,46 +224,7 @@ int main()
 		}
 		cout << "//" << endl;
 		heightMap.SetValue(local.x, local.y, 1.0000);
-		if(local.value < 0.2000) shallow = true;
+		if(local.value <= 0.2000) shallow = true;
 		//j++;
 	}
-	
-	
-	
-	cout << "Position of the maximum value of the heightMap: [X,Y]: " << xmax <<  ", " << ymax << endl;
-	
-	utils::RendererImage renderer;
-	utils::Image image;
-	renderer.SetSourceNoiseMap (heightMap);
-	renderer.SetDestImage (image);
-	renderer.ClearGradient ();
-	
-	/*renderer.AddGradientPoint (-1.0000, utils::Color (255,   0,   0, 255));
-	renderer.AddGradientPoint ( 0.0000, utils::Color (255, 255, 255, 255));
-	renderer.AddGradientPoint ( 1.0000, utils::Color (  0,   0,   0, 255));*/
-	
-	renderer.AddGradientPoint (-1.0000, utils::Color (  0,   0,  64, 255));
-	renderer.AddGradientPoint ( 0.0000, utils::Color (  0,   0, 128, 255)); // deeps
-	renderer.AddGradientPoint ( 0.1000, utils::Color (  0,   0, 255, 255)); // shallow
-	renderer.AddGradientPoint ( 0.2000, utils::Color (  0, 128, 255, 255)); // shore
-	renderer.AddGradientPoint ( 0.3500, utils::Color (240, 240, 128, 255)); // sand
-	//renderer.AddGradientPoint ( 0.5500, utils::Color (224, 224,   0, 255)); // dirt
-	renderer.AddGradientPoint ( 0.4500, utils::Color ( 32, 200,   0, 255)); // grass 
-	renderer.AddGradientPoint ( 0.5500, utils::Color (223, 191, 159, 255)); // dirt
-	renderer.AddGradientPoint ( 0.7500, utils::Color (128, 128, 128, 255)); // rock
-	renderer.AddGradientPoint ( 0.9000, utils::Color (207,  16,  32, 255)); // Lava
-	renderer.AddGradientPoint ( 1.0000, utils::Color (255,   0,   0, 255)); // Pure RED*/
-	
-	renderer.EnableLight ();
-	renderer.SetLightContrast (contrast); //3.0
-	renderer.SetLightBrightness (brightness); //2.0
-	renderer.Render ();
-	
-	utils::WriterBMP Writer;
-	Writer.SetSourceImage(image);
-	
-	Writer.SetDestFilename(std::to_string(seed) + ".bmp");
-	Writer.WriteDestFile();
-	
-	cout << "Check the directory. It contains the generated map." << endl;
-}
+	cout << "Position of the maximum value of the heightMap: [X,Y]: " << xmax <<  ", " << ymax << endl;*/
