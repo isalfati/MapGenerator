@@ -43,40 +43,17 @@ int main()
 	cin >> contrast >> brightness;
 	
 	module::Perlin basicMap;
-	basicMap.SetFrequency(1.0); //Altough I think it is already defaulted at 1.
+	basicMap.SetFrequency(1.0); 
 	basicMap.SetLacunarity(2.2);
 	basicMap.SetNoiseQuality(QUALITY_BEST);
 	basicMap.SetOctaveCount(16);
 	basicMap.SetPersistence(0.5);
-	//basicMap.SetSeed(2002235257);
-	basicMap.SetSeed(283802548);
-	
-	module::Curve basicMapCurved;
-	basicMapCurved.SetSourceModule(0, basicMap);
-	/*basicMapCurved.AddControlPoint(-2.0000, -1.625);
-	basicMapCurved.AddControlPoint(-1.0000, -1.375);
-	basicMapCurved.AddControlPoint( 0.0000, -0.375);
-	basicMapCurved.AddControlPoint( 0.0625,  0.125);
-	basicMapCurved.AddControlPoint( 0.1250,  0.250);
-	basicMapCurved.AddControlPoint( 0.2500,  1.000);
-	basicMapCurved.AddControlPoint( 0.5000,  0.250);
-	basicMapCurved.AddControlPoint( 0.7500,  0.250);
-	basicMapCurved.AddControlPoint( 1.0000,  0.500);
-	basicMapCurved.AddControlPoint( 2.0000,  0.500);//*/
-	
-	//Seguir desde linea 153
-	basicMapCurved.AddControlPoint(-1.0000,  1.0000);
-	basicMapCurved.AddControlPoint(-0.5000,  0.5000);
-	basicMapCurved.AddControlPoint( 0.0000,  0.0000);
-	basicMapCurved.AddControlPoint( 0.5000, -0.5000);
-	basicMapCurved.AddControlPoint( 1.0000, -1.0000);
-	
+	basicMap.SetSeed(seed);
 	
 	utils::NoiseMap heightMap;
 	utils::NoiseMapBuilderPlane heightMapBuilder;
 	//heightMapBuilder.SetSourceModule(/* NAME FINAL TERRAIN */);
-	//heightMapBuilder.SetSourceModule(basicMap);
-	heightMapBuilder.SetSourceModule(basicMapCurved);
+	heightMapBuilder.SetSourceModule(basicMap);
 	heightMapBuilder.SetDestNoiseMap(heightMap);
 	heightMapBuilder.SetDestSize(width, height);
 	heightMapBuilder.SetBounds(xLow, xHigh, yLow, yHigh);
@@ -109,7 +86,11 @@ int main()
 		for(int y = 0; y < height; y++){
 			dx = abs(x - width*0.5);
 			dy = abs(y - width*0.5);
+			// Island
 			d = sqrt(dx*dx + dy*dy);
+			// More like a continent
+			d = max(dx, dy);
+			
 			
 			maxw = height * 0.5 - 10.0;
 			delta = d / maxw;
@@ -148,18 +129,18 @@ int main()
 	
 	//Render para mapas normalizados
 	renderer.AddGradientPoint (-1.0000, utils::Color (  0,   0,  64, 255));
-	renderer.AddGradientPoint ( 0.0000, utils::Color (  0,   0, 128, 255)); // deeps
+	renderer.AddGradientPoint (-0.5000, utils::Color (  0,   0, 128, 255)); // deeps
 	renderer.AddGradientPoint ( 0.1000, utils::Color (  0,   0, 255, 255)); // shallow
-	renderer.AddGradientPoint ( 0.2000, utils::Color (  0, 128, 255, 255)); // shore
+	renderer.AddGradientPoint ( 0.3250, utils::Color (  0, 128, 255, 255)); // shore
 	renderer.AddGradientPoint ( 0.3500, utils::Color (240, 240, 128, 255)); // sand
-	//renderer.AddGradientPoint ( 0.5500, utils::Color (224, 224,   0, 255)); // dirt
-	renderer.AddGradientPoint ( 0.4500, utils::Color ( 32, 200,   0, 255)); // grass 
-	renderer.AddGradientPoint ( 0.5500, utils::Color (223, 191, 159, 255)); // dirt
-	renderer.AddGradientPoint ( 0.7500, utils::Color (128, 128, 128, 255)); // rock
-	//renderer.AddGradientPoint ( 0.9000, utils::Color (207,  16,  32, 255)); // Lava
-	//renderer.AddGradientPoint ( 1.0000, utils::Color (255,   0,   0, 255)); // Pure RED
-	renderer.AddGradientPoint ( 0.9000, utils::Color (128, 128, 128, 255));
-	renderer.AddGradientPoint ( 1.0000, utils::Color (255, 255, 255, 255)); // */
+	renderer.AddGradientPoint ( 0.4000, utils::Color ( 32, 200,   0, 255)); // grass 
+	renderer.AddGradientPoint ( 0.6500, utils::Color (223, 191, 159, 255)); // dirt
+	//renderer.AddGradientPoint ( 0.7500, utils::Color (128, 128, 128, 255)); // rock
+	renderer.AddGradientPoint ( 0.7500, utils::Color (122, 102, 82, 255)); // rock
+	renderer.AddGradientPoint ( 0.9000, utils::Color (207,  16,  32, 255)); // Lava
+	renderer.AddGradientPoint ( 1.0000, utils::Color (255,   0,   0, 255)); // Pure RED
+	//renderer.AddGradientPoint ( 0.9000, utils::Color (128, 128, 128, 255));
+	//renderer.AddGradientPoint ( 1.0000, utils::Color (255, 255, 255, 255)); // */
 	
 	renderer.EnableLight ();
 	renderer.SetLightContrast (contrast); //3.0

@@ -65,19 +65,18 @@ NOTE: If you are using noiseutils library (http://libnoise.sourceforge.net/downl
 #### Find below some examples
 ![Map1](https://github.com/isalfati/MapGenerator/blob/master/img/map_1.bmp)
 ![Map2](https://github.com/isalfati/MapGenerator/blob/master/img/map_2.bmp)
-
-In this example, the black (in land) and yellow (in sea) points means that there is a Point of Interest. 
-The number of POIs is randomly generated.
-
 ![Map3](https://github.com/isalfati/MapGenerator/blob/master/img/map_3.bmp)
+![Map4](https://github.com/isalfati/MapGenerator/blob/master/img/map_4.bmp)
 
 Here are some mono-color examples
 
-![Map4](https://github.com/isalfati/MapGenerator/blob/master/img/map_4.bmp)
-![Map5](https://github.com/isalfati/MapGenerator/blob/master/img/map_5.bmp)
-![Map6](https://github.com/isalfati/MapGenerator/blob/master/img/map_6.bmp)
+![Map4](https://github.com/isalfati/MapGenerator/blob/master/img/map_5.bmp)
+![Map5](https://github.com/isalfati/MapGenerator/blob/master/img/map_6.bmp)
+![Map6](https://github.com/isalfati/MapGenerator/blob/master/img/map_7.bmp)
 
 Also, an aplication of this library could be a blood moon generator:
 
-![BM1](https://github.com/isalfati/MapGenerator/blob/master/img/BM_1.bmp) ![BM2](https://github.com/isalfati/MapGenerator/blob/master/img/BM_2.bmp)
-![BM3](https://github.com/isalfati/MapGenerator/blob/master/img/BM_3.bmp) ![BM4](https://github.com/isalfati/MapGenerator/blob/master/img/BM_4.bmp)
+![BM1](https://github.com/isalfati/MapGenerator/blob/master/img/BM_1.bmp) 
+![BM2](https://github.com/isalfati/MapGenerator/blob/master/img/BM_2.bmp)
+![BM3](https://github.com/isalfati/MapGenerator/blob/master/img/BM_3.bmp) 
+![BM4](https://github.com/isalfati/MapGenerator/blob/master/img/BM_4.bmp)
