@@ -70,9 +70,9 @@ NOTE: If you are using noiseutils library (http://libnoise.sourceforge.net/downl
 
 Here are some mono-color examples
 
-![Map4](https://github.com/isalfati/MapGenerator/blob/master/img/map_5.bmp)
-![Map5](https://github.com/isalfati/MapGenerator/blob/master/img/map_6.bmp)
-![Map6](https://github.com/isalfati/MapGenerator/blob/master/img/map_7.bmp)
+![Map5](https://github.com/isalfati/MapGenerator/blob/master/img/map_5.bmp)
+![Map6](https://github.com/isalfati/MapGenerator/blob/master/img/map_6.bmp)
+![Map7](https://github.com/isalfati/MapGenerator/blob/master/img/map_7.bmp)
 
 Also, an aplication of this library could be a blood moon generator:
 
