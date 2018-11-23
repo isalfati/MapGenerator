@@ -9,17 +9,11 @@ BM: bloodmoon.o
 bloodmoon.o:
 	$(CC) $(STD) -c bloodmoon.cpp
 
-MG: main.o
-	$(CC) main.o $(CFLAGS) MG.out -I/usr/local/include -L/usr/local/lib -lnoise
-
 map: mapexample.o
-	$(CC) mapexample.o $(CFLAGS) map.out -I/usr/local/include -L/usr/local/lib -lnoise
+	$(CC) mapexample.o $(CFLAGS) map.out $(LIBS)
 
 mapexample.o:
 	$(CC) $(STD) -c mapexample.cpp
-
-main.o:
-	$(CC) $(STD) -c main.cpp
 
 rebuild:
 	$(MAKE) clean
