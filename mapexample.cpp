@@ -10,25 +10,20 @@ using namespace std;
 using namespace noise;
 using namespace noise::utils;
 
-void printMap(Perlin map, int w, int h)
-{
-  for(int i = 0; i < w; i++){
-    for(int j = 0; j < h; j++){
-      double x = map.GetValue(i, j, 0);
-      if(x >  1.0) x =  1.0;
-      if(x < -1.0) x = -1,0;
-      //cout << x << " ";
-    }
-    //cout << endl;
-  }
-}
-
 string tswp(double value, int n = 3)
 {
 	ostringstream out;
 	out.precision(n);
 	out << fixed << value;
 	return out.str();
+}
+
+void usage()
+{
+  cout << "Welcome to the Perlin Noise Map Generator" << endl;
+  cout << "This are the parameters (in this exactly order) that the binary needs: " << endl;
+  cout << "width height            ----------> Size of the map in pixels. It should be an square." << endl;
+  cout << "xLow xHigh yLow yHigh   ----------> " << endl;
 }
 
 int main()
@@ -58,7 +53,6 @@ int main()
     basicMap.SetPersistence(0.5);
     basicMap.SetSeed(seed);
 
-    printMap(basicMap, width, height);
     /*utils::NoiseMap heightMapBasic;
     utils::NoiseMapBuilderPlane heightMapBasicBuilder;
     heightMapBasicBuilder.SetSourceModule(basicMap);
@@ -80,7 +74,6 @@ int main()
     mountainTerrain.SetPersistence(0.5);
     mountainTerrain.SetSeed(seedMountain);
 
-    printMap(mountainTerrain, width, height);
     /*module::ScaleBias bigHills;
     bigHills.SetSourceModule(0, mountainTerrain);
     bigHills.SetScale(0.25);
@@ -99,7 +92,6 @@ int main()
     terrainType1.SetPersistence(0.5);
     terrainType1.SetSeed(seedTerrain);
 
-    printMap(terrainType1, width, height);
     // --------------------------------------------------------- \\
 
     module::Select terrainPart1;
@@ -147,11 +139,11 @@ int main()
 
     for(int i = 0; i < width; i++){
       for(int j = 0; j < height; j++){
-          heightMapTerrainPart1.SetValue(i, j, (heightMapTerrainPart1.GetValue(i, j) - minnh) / ( maxnh - minnh));
+          heightMapTerrainPart1.SetValue(i, j, ((heightMapTerrainPart1.GetValue(i, j) - minnh) / ( maxnh - minnh)) + 0.05);
       }
     }
 
-    // Circle filter
+// TODO: Hacer los cuadrantes de un tipo u otro "random"
   	double dx, dy, d, maxw, delta, gradient;
   	for(int x = 0; x < width; x++){
   		for(int y = 0; y < height; y++){
@@ -161,8 +153,17 @@ int main()
             // Island
   			    d = sqrt(dx*dx + dy*dy);
         }else if(shape == 'C'){
-  			    // More like a
-            d = max(dx, dy);
+  			    // More like a continent
+						if((x <= width/2) and (y <= height/2)){
+								d = sqrt(dx*dx + dy*dy);
+						}else if((x <= width/2) and (y > height/2)){
+								d = max(dx, dy);
+						}else if((x > width/2) and (y <= height/2)){
+								d = max(dx, dy);
+						}else if((x > width/2) and (y > height/2)){
+							  d = sqrt(dx*dx + dy*dy);
+						}
+          	//d = max(dx, dy);
         }
   			//maxw = height*0.66 - width*0.1;// * 0.5 -100.0; // + 10.0;
         //maxw = height*0.5;
