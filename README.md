@@ -2,7 +2,7 @@
 
 I'm creating a map generator based on Perlin Noise.
 
-First, we need to install the Libnoise Library (https://github.com/qknight/libnoise) as follows
+First, we need to install the [Libnoise Library](https://github.com/qknight/libnoise) as follows
 
 ```
 git clone https://github.com/qknight/libnoise
@@ -60,7 +60,7 @@ export LD_LIBRARY_PATH
 
 Then you should be able to run your application.
 
-NOTE: If you are using noiseutils library (http://libnoise.sourceforge.net/downloads/noiseutils.zip), do not forget to include noiseutils.cpp into the main file.
+NOTE: If you are using [noiseutils library](http://libnoise.sourceforge.net/downloads/noiseutils.zip), do not forget to include noiseutils.cpp into the main file.
 
 #### Find below some examples
 ![Map1](https://github.com/isalfati/MapGenerator/blob/master/img/map_1.bmp)
