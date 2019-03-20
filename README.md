@@ -48,9 +48,8 @@ Once you've compiled, try to execute the binary. It is possible that you get the
 error while loading shared libraries: libnoise.so: cannot open shared object file: No such file or directory
 ```
 
-It it is the case, do the following:
+It it is the case, check the value of ```LD_LIBRARY_PATH``` environment variable:
 ```
-sudo find / -name libnoise.so
 echo $LD_LIBRARY_PATH
 ```
 if there is nothing to be displayed, add the default path value
