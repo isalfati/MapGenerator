@@ -12,8 +12,9 @@ cd build
 cmake ..
 make
 sudo make install
+```
 
-Note that need to have installed at least ```gcc``` and ```g++```.
+Note that need to have installed at least ```g++``` and  ```gcc```.
 
 Once you've done this, you can erase the libnoise folder.
 
